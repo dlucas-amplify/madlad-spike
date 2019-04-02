@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MadLad on Canvas</title>
+    <style>
+        body {
+            background: black;
+            color: white;
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+
+        #menu {
+            position: sticky;
+            left: 10px;
+            top: 10px;
+            background: #222;
+            padding: 5px;
+            border-radius: 10px;
+            background-color: #222;
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: center;
+        }
+
+        [class^='btn_'] {
+            background-color: #333;
+            border: none;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 5px;
+            display: block;
+        }
+
+        .btn_0:hover {
+            background-color: green;
+        }
+
+        .btn_1:hover {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Madlad on canvas</h1>
+    <nav id="menu"></nav>
+    <canvas id="madlad"></canvas>
+    <script src="/spine-runtimes-3.7/spine-ts/build/spine-canvas.js"></script>
+    <script src="madlads.js"></script>
+</body>
+</html>

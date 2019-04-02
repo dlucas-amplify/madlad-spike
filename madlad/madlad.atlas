@@ -1,0 +1,272 @@
+
+madlad.png
+size: 512,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+belt
+  rotate: false
+  xy: 249, 459
+  size: 189, 51
+  orig: 189, 51
+  offset: 0, 0
+  index: -1
+body
+  rotate: false
+  xy: 2, 217
+  size: 175, 293
+  orig: 175, 293
+  offset: 0, 0
+  index: -1
+body_back
+  rotate: false
+  xy: 179, 217
+  size: 68, 293
+  orig: 68, 293
+  offset: 0, 0
+  index: -1
+brow_l
+  rotate: false
+  xy: 186, 60
+  size: 24, 3
+  orig: 24, 3
+  offset: 0, 0
+  index: -1
+brow_r
+  rotate: false
+  xy: 186, 60
+  size: 24, 3
+  orig: 24, 3
+  offset: 0, 0
+  index: -1
+cheek_l
+  rotate: false
+  xy: 128, 28
+  size: 34, 20
+  orig: 34, 20
+  offset: 0, 0
+  index: -1
+cheek_r
+  rotate: false
+  xy: 240, 119
+  size: 34, 20
+  orig: 34, 20
+  offset: 0, 0
+  index: -1
+eye_l
+  rotate: false
+  xy: 493, 495
+  size: 15, 15
+  orig: 15, 15
+  offset: 0, 0
+  index: -1
+eye_r
+  rotate: false
+  xy: 353, 228
+  size: 16, 15
+  orig: 16, 15
+  offset: 0, 0
+  index: -1
+foot_l
+  rotate: false
+  xy: 276, 135
+  size: 59, 23
+  orig: 59, 23
+  offset: 0, 0
+  index: -1
+foot_r
+  rotate: false
+  xy: 276, 135
+  size: 59, 23
+  orig: 59, 23
+  offset: 0, 0
+  index: -1
+hand_l
+  rotate: false
+  xy: 186, 92
+  size: 45, 25
+  orig: 45, 25
+  offset: 0, 0
+  index: -1
+hand_l_muscle
+  rotate: false
+  xy: 128, 50
+  size: 34, 63
+  orig: 34, 63
+  offset: 0, 0
+  index: -1
+hand_r
+  rotate: false
+  xy: 186, 65
+  size: 45, 25
+  orig: 45, 25
+  offset: 0, 0
+  index: -1
+hand_r_muscle
+  rotate: false
+  xy: 240, 141
+  size: 34, 63
+  orig: 34, 63
+  offset: 0, 0
+  index: -1
+headband
+  rotate: false
+  xy: 2, 165
+  size: 236, 50
+  orig: 236, 50
+  offset: 0, 0
+  index: -1
+headband_knot
+  rotate: false
+  xy: 440, 460
+  size: 51, 50
+  orig: 51, 50
+  offset: 0, 0
+  index: -1
+la_l
+  rotate: false
+  xy: 353, 245
+  size: 22, 118
+  orig: 22, 118
+  offset: 0, 0
+  index: -1
+la_l_muscle
+  rotate: false
+  xy: 2, 71
+  size: 124, 42
+  orig: 124, 42
+  offset: 0, 0
+  index: -1
+la_r
+  rotate: false
+  xy: 377, 289
+  size: 21, 118
+  orig: 21, 118
+  offset: 0, 0
+  index: -1
+la_r_muscle
+  rotate: false
+  xy: 249, 365
+  size: 124, 42
+  orig: 124, 42
+  offset: 0, 0
+  index: -1
+ll_l
+  rotate: false
+  xy: 106, 2
+  size: 20, 67
+  orig: 20, 67
+  offset: 0, 0
+  index: -1
+ll_r
+  rotate: false
+  xy: 106, 2
+  size: 20, 67
+  orig: 20, 67
+  offset: 0, 0
+  index: -1
+long_arm_lower_l
+  rotate: false
+  xy: 249, 409
+  size: 170, 48
+  orig: 170, 48
+  offset: 0, 0
+  index: -1
+long_arm_lower_r
+  rotate: false
+  xy: 2, 115
+  size: 170, 48
+  orig: 170, 48
+  offset: 0, 0
+  index: -1
+mouth
+  rotate: false
+  xy: 2, 6
+  size: 52, 4
+  orig: 52, 4
+  offset: 0, 0
+  index: -1
+mouth_open
+  rotate: false
+  xy: 174, 142
+  size: 64, 21
+  orig: 64, 21
+  offset: 0, 0
+  index: -1
+mouth_zig
+  rotate: false
+  xy: 174, 119
+  size: 64, 21
+  orig: 64, 21
+  offset: 0, 0
+  index: -1
+ua_l
+  rotate: false
+  xy: 276, 183
+  size: 65, 21
+  orig: 65, 21
+  offset: 0, 0
+  index: -1
+ua_l_muscle
+  rotate: false
+  xy: 2, 12
+  size: 102, 57
+  orig: 102, 57
+  offset: 0, 0
+  index: -1
+ua_l_muscle_med
+  rotate: false
+  xy: 249, 256
+  size: 102, 48
+  orig: 102, 48
+  offset: 0, 0
+  index: -1
+ua_l_sml_muscle_piece
+  rotate: false
+  xy: 276, 124
+  size: 52, 9
+  orig: 52, 9
+  offset: 0, 0
+  index: -1
+ua_r
+  rotate: false
+  xy: 276, 160
+  size: 65, 21
+  orig: 65, 21
+  offset: 0, 0
+  index: -1
+ua_r_muscle
+  rotate: false
+  xy: 249, 306
+  size: 102, 57
+  orig: 102, 57
+  offset: 0, 0
+  index: -1
+ua_r_muscle_med
+  rotate: false
+  xy: 249, 206
+  size: 102, 48
+  orig: 102, 48
+  offset: 0, 0
+  index: -1
+ua_r_sml_muscle_piece
+  rotate: false
+  xy: 276, 113
+  size: 52, 9
+  orig: 52, 9
+  offset: 0, 0
+  index: -1
+ul_l
+  rotate: false
+  xy: 400, 337
+  size: 20, 70
+  orig: 20, 70
+  offset: 0, 0
+  index: -1
+ul_r
+  rotate: false
+  xy: 164, 43
+  size: 20, 70
+  orig: 20, 70
+  offset: 0, 0
+  index: -1
