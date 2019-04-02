@@ -7,8 +7,8 @@ class SpineCharacter {
     constructor() {
 
         this.canvas = document.createElement('canvas');
-        this.canvas.width = 200;
-        this.canvas.height = 200;
+        this.canvas.width = 100;
+        this.canvas.height = 100;
         this.context = this.canvas.getContext('2d');
 
         this.skeletonRenderer = new spine.canvas.SkeletonRenderer(this.context);
