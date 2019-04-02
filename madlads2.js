@@ -175,7 +175,6 @@ function setAnimState(name, track){
 
         madlad.context.beginPath();
         madlad.context.strokeStyle = "black";
-        console.log(madlad);
         madlad.context.strokeRect(10, 10, 100, 100);
         madlad.context.stroke();
     }
