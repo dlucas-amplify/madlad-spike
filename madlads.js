@@ -1,6 +1,7 @@
 const skeletonName = 'madlad';
 const animName = 'idle';
-var madLads = [];
+const madLads = [];
+const numChars = 36;
 
 class SpineCharacter {
     constructor() {
@@ -26,7 +27,7 @@ class SpineCharacter {
 
     load() {
         if (this.assetManager.isLoadingComplete()) {
-            var data = this.loadSkeleton(skeletonName, animName, 'default');
+            const data = this.loadSkeleton(skeletonName, animName, 'default');
             this.skeleton = data.skeleton;
             this.state = data.state;
             this.bounds = data.bounds;
@@ -43,20 +44,20 @@ class SpineCharacter {
         });
     
         // Create a AtlasAttachmentLoader, which is specific to the WebGL backend.
-        var atlasLoader = new spine.AtlasAttachmentLoader(atlas);
+        const atlasLoader = new spine.AtlasAttachmentLoader(atlas);
     
         // Create a SkeletonJson instance for parsing the .json file.
-        var skeletonJson = new spine.SkeletonJson(atlasLoader);
+        const skeletonJson = new spine.SkeletonJson(atlasLoader);
     
         // Set the scale to apply during parsing, parse the file, and create a new skeleton.
-        var skeletonData = skeletonJson.readSkeletonData(this.assetManager.get('madlad/' + name + '.json'));
-        var skeleton = new spine.Skeleton(skeletonData);
+        const skeletonData = skeletonJson.readSkeletonData(this.assetManager.get('madlad/' + name + '.json'));
+        const skeleton = new spine.Skeleton(skeletonData);
         skeleton.scaleY = -1;
-        var bounds = this.calculateBounds(skeleton);
+        const bounds = this.calculateBounds(skeleton);
         skeleton.setSkinByName(skin);
     
         // Create an AnimationState, and set the initial animation in looping mode.
-        var animationState = new spine.AnimationState(new spine.AnimationStateData(skeleton.data));
+        const animationState = new spine.AnimationState(new spine.AnimationStateData(skeleton.data));
         animationState.setAnimation(0, initialAnimation, true);
         animationState.addListener({
             event: function(trackIndex, event) {
@@ -78,18 +79,17 @@ class SpineCharacter {
     }
 
     calculateBounds(skeleton) {
-        var data = skeleton.data;
         skeleton.setToSetupPose();
         skeleton.updateWorldTransform();
-        var offset = new spine.Vector2();
-        var size = new spine.Vector2();
+        const offset = new spine.Vector2();
+        const size = new spine.Vector2();
         skeleton.getBounds(offset, size, []);
         return { offset: offset, size: size };
     }
 
     render (timestamp) {
-        var now = Date.now() / 1000;
-        var delta = now - this.lastFrameTime;
+        const now = Date.now() / 1000;
+        const delta = now - this.lastFrameTime;
         this.lastFrameTime = now;
         this.resize();
         this.context.save();
@@ -106,22 +106,22 @@ class SpineCharacter {
     }
     
     resize () {
-        var w = this.canvas.clientWidth;
-        var h = this.canvas.clientHeight;
+        const w = this.canvas.clientWidth;
+        const h = this.canvas.clientHeight;
         if (this.canvas.width != w || this.canvas.height != h) {
             this.canvas.width = w;
             this.canvas.height = h;
         }
     
         // magic
-        var centerX = this.bounds.offset.x + this.bounds.size.x / 2;
-        var centerY = this.bounds.offset.y + this.bounds.size.y / 2;
-        var scaleX = this.bounds.size.x / this.canvas.width;
-        var scaleY = this.bounds.size.y / this.canvas.height;
-        var scale = Math.max(scaleX, scaleY) * 1.2;
+        const centerX = this.bounds.offset.x + this.bounds.size.x / 2;
+        const centerY = this.bounds.offset.y + this.bounds.size.y / 2;
+        const scaleX = this.bounds.size.x / this.canvas.width;
+        const scaleY = this.bounds.size.y / this.canvas.height;
+        const scale = Math.max(scaleX, scaleY) * 1.2;
         if (scale < 1) scale = 1;
-        var width = this.canvas.width * scale;
-        var height = this.canvas.height * scale;
+        const width = this.canvas.width * scale;
+        const height = this.canvas.height * scale;
     
         this.context.setTransform(1, 0, 0, 1, 0, 0);
         this.context.scale(1 / scale, 1 / scale);
@@ -131,7 +131,7 @@ class SpineCharacter {
 }
 
 function buildMenu(){
-    var stateArr = [
+    const stateArr = [
         {"name":"property_credible_on","track":4},
         {"name":"property_credible_off","track":4},
         {"name":"property_fact_on","track":2},
@@ -149,13 +149,13 @@ function buildMenu(){
         {"name":"property_color_change_on","track":6},
         {"name":"property_color_change_off","track":6}
     ];
-    var menu_div = document.getElementById("menu");
-    var btnStates = ["on", "off"];
+    const menu_div = document.getElementById("menu");
+    const btnStates = ["on", "off"];
 
-    for (var i = 0; i < stateArr.length; i++){
-        var t = i % 2;
-        var item = stateArr[i];
-        var button = document.createElement("button");
+    for (let i = 0; i < stateArr.length; i++){
+        const t = i % 2;
+        const item = stateArr[i];
+        const button = document.createElement("button");
         button.className = "btn_" + t;
         button.track = item.track;
         button.innerHTML = item.name;
@@ -168,8 +168,8 @@ function buildMenu(){
 
 function setAnimState(name, track){
     
-    for (var i=0; i < madLads.length; i++) {
-        var madlad = madLads[i];
+    for (let i=0; i < madLads.length; i++) {
+        const madlad = madLads[i];
         madlad.state.setAnimation(track, name, false);
         madlad.state.data.defaultMix = 0;
 
@@ -183,7 +183,7 @@ function setAnimState(name, track){
 function init() {
     const characterContainer = document.querySelector('.madlads');
     let character = null;
-    for (var i = 0; i < 36; i++) {
+    for (let i = 0; i < numChars; i++) {
         character = new SpineCharacter();
         characterContainer.append(character.canvas);
         madLads.push(character);
