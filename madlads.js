@@ -1,8 +1,9 @@
 // A Single MadLad - on canvas
 
 // globals
+var canvases = [];
 var lastFrameTime = Date.now() / 1000;
-var canvas, context;
+var canvas;
 var skeletonRenderer;
 var assetManager;
 var skeletonName = 'madlad';
@@ -45,72 +46,40 @@ function buildMenu(){
     }
 }
 
-function createCharacter(index) {
-    var div = document.createElement("div");
-    div.className = "spine_widget";
+function createCanvasCharacter() {
+    canvases.forEach((canvasObj) => {
+        canvasObj.context = canvasObj.canvas.getContext('2d');
+
+        canvasObj.skeletonRenderer = new spine.canvas.SkeletonRenderer(canvasObj.context);
     
-    var id_str = "my-widget-" + index;
-    div.id = id_str;
-    document.getElementById("main").appendChild(div);
+        canvasObj.assetManager = new spine.canvas.AssetManager();
     
-    var mad_lad = new spine.SpineWidget(id_str, {
-        json: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/435216/madlad.json",
-        atlas: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/435216/madlad_half.atlas",
-        animation: "idle",
-        backgroundColor: "#00000000",
-        success: function(widget) {
-            var animIndex = 0;
-            // setTimeout(function() {
-            //     createCharacter(widget);
-            // }, 10);
-            madlad = widget;
-            // madlad.state.data.defaultMix = 0.25; //wondering if this is too general a way to do this
-            //ie, should we just be setting the mix per setAnimation calls -cm
-        }
+        canvasObj.assetManager.loadText(`madlad/${skeletonName}.json`);
+        canvasObj.assetManager.loadText(`madlad/${skeletonName}.atlas`);
+        canvasObj.assetManager.loadTexture(`madlad/${skeletonName}.png`);
+        console.log(canvasObj.assetManager.isLoadingComplete);
+        requestAnimationFrame(load.bind(canvasObj));
+        // load.bind(canvasObj);
     });
 
-    var mad_lad = new spine.Spine
-    
-    madladArr.push(mad_lad);
-    return mad_lad;
-    
 }
 
-function createCanvasCharacter() {
-    canvas = document.getElementById('madlad');
-    // canvas.width = window.innerWidth;
-    // canvas.height = window.innerHeight;
-    canvas.width = 200;
-    canvas.height = 200;
-    context = canvas.getContext('2d');
-
-    skeletonRenderer = new spine.canvas.SkeletonRenderer(context);
-
-    assetManager = new spine.canvas.AssetManager();
-
-    assetManager.loadText(`madlad/${skeletonName}.json`);
-    assetManager.loadText(`madlad/${skeletonName}.atlas`);
-    assetManager.loadTexture(`madlad/${skeletonName}.png`);
-
-    requestAnimationFrame(load);
-}
-
-function load() {
-    if (assetManager.isLoadingComplete()) {
+function load(co) {
+    if (co.assetManager.isLoadingComplete()) {
         console.log('loading complete!');
-        var data = loadSkeleton(skeletonName, animName, 'default');
-        skeleton = data.skeleton;
-        state = data.state;
-        bounds = data.bounds;
+        var data = loadSkeleton(co, skeletonName, animName, 'default');
+        co.skeleton = data.skeleton;
+        co.state = data.state;
+        co.bounds = data.bounds;
         requestAnimationFrame(render);
     } else {
-        requestAnimationFrame(load);
+        requestAnimationFrame(load.bind(co));
     }
 }
 
-function loadSkeleton(name, initialAnimation, skin) {
-    atlas = new spine.TextureAtlas(assetManager.get(`madlad/${name}.atlas`), function(path) {
-        return assetManager.get('madlad/' + path);
+function loadSkeleton(co, name, initialAnimation, skin) {
+    const atlas = new spine.TextureAtlas(co.assetManager.get(`madlad/${name}.atlas`), function(path) {
+        return co.assetManager.get('madlad/' + path);
     });
 
     // Create a AtlasAttachmentLoader, which is specific to the WebGL backend.
@@ -120,7 +89,7 @@ function loadSkeleton(name, initialAnimation, skin) {
     var skeletonJson = new spine.SkeletonJson(atlasLoader);
 
     // Set the scale to apply during parsing, parse the file, and create a new skeleton.
-    var skeletonData = skeletonJson.readSkeletonData(assetManager.get('madlad/' + name + '.json'));
+    var skeletonData = skeletonJson.readSkeletonData(co.assetManager.get('madlad/' + name + '.json'));
     var skeleton = new spine.Skeleton(skeletonData);
     skeleton.scaleY = -1;
     var bounds = calculateBounds(skeleton);
@@ -158,54 +127,67 @@ function calculateBounds(skeleton) {
     return { offset: offset, size: size };
 }
 
-function render () {
+function render (co) {
     var now = Date.now() / 1000;
     var delta = now - lastFrameTime;
     lastFrameTime = now;
 
-    resize();
+    resize(co);
 
-    context.save();
-    context.setTransform(1, 0, 0, 1, 0, 0);
-    context.fillStyle = "#cccccc";
-    context.fillRect(0, 0, canvas.width, canvas.height);
-    context.restore();
+    co.context.save();
+    co.context.setTransform(1, 0, 0, 1, 0, 0);
+    co.context.fillStyle = "#cccccc";
+    co.context.fillRect(0, 0, co.canvas.width, co.canvas.height);
+    co.context.restore();
 
-    state.update(delta);
-    state.apply(skeleton);
-    skeleton.updateWorldTransform();
-    skeletonRenderer.draw(skeleton);
+    co.state.update(delta);
+    co.state.apply(skeleton);
+    co.skeleton.updateWorldTransform();
+    co.skeletonRenderer.draw(skeleton);
 
     requestAnimationFrame(render);
 }
 
 function resize () {
-    var w = canvas.clientWidth;
-    var h = canvas.clientHeight;
-    if (canvas.width != w || canvas.height != h) {
-        canvas.width = w;
-        canvas.height = h;
+    var w = co.canvas.clientWidth;
+    var h = co.canvas.clientHeight;
+    if (co.canvas.width != w || co.canvas.height != h) {
+        co.canvas.width = w;
+        co.canvas.height = h;
     }
 
     // magic
-    var centerX = bounds.offset.x + bounds.size.x / 2;
-    var centerY = bounds.offset.y + bounds.size.y / 2;
-    var scaleX = bounds.size.x / canvas.width;
-    var scaleY = bounds.size.y / canvas.height;
+    var centerX = co.bounds.offset.x + co.bounds.size.x / 2;
+    var centerY = co.bounds.offset.y + co.bounds.size.y / 2;
+    var scaleX = co.bounds.size.x / co.canvas.width;
+    var scaleY = co.bounds.size.y / co.canvas.height;
     var scale = Math.max(scaleX, scaleY) * 1.2;
     if (scale < 1) scale = 1;
-    var width = canvas.width * scale;
-    var height = canvas.height * scale;
+    var width = co.canvas.width * scale;
+    var height = co.canvas.height * scale;
 
-    context.setTransform(1, 0, 0, 1, 0, 0);
-    context.scale(1 / scale, 1 / scale);
-    context.translate(-centerX, -centerY);
-    context.translate(width / 2, height / 2);
+    co.context.setTransform(1, 0, 0, 1, 0, 0);
+    co.context.scale(1 / scale, 1 / scale);
+    co.context.translate(-centerX, -centerY);
+    co.context.translate(width / 2, height / 2);
+}
+
+function generateCharacters(numChars) {
+    for (var i = 0; i < numChars; i++) {
+        const canvas = document.createElement('canvas');
+        const charContainer = document.querySelector('.madlads');
+        canvas.width = 200;
+        canvas.height = 200;
+        canvases.push({canvas});
+        charContainer.append(canvas);
+        createCanvasCharacter();
+    }
 }
 
 function init() {
     buildMenu();
-    createCanvasCharacter();
+    // createCanvasCharacter();
+    generateCharacters(16);
 }
 
 (function() {

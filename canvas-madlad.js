@@ -45,6 +45,11 @@ function buildMenu(){
     }
 }
 
+function setAnimState(name, track){
+    state.setAnimation(track, name, false);
+    state.data.defaultMix = 0;
+}
+
 function createCharacter(index) {
     var div = document.createElement("div");
     div.className = "spine_widget";
