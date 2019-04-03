@@ -1,15 +1,25 @@
+// create a single canvas, and draw madlads to it
+
+// Attempted to just pass the same canvas to all instances of the spine character but that did not work
+// I assume is that each time `skeletonRenderer.draw` is called, the canvas is just completely redrawn, so we're only 
+// seeing the last one.
+let canvas, context;
 const skeletonName = 'madlad';
 const animName = 'idle';
 const madLads = [];
-const numChars = 1;
+const numChars = 36;
 
 class SpineCharacter {
-    constructor() {
+    constructor(canvas, ctx, canvasOffset) {
 
-        this.canvas = document.createElement('canvas');
-        this.canvas.width = 100;
-        this.canvas.height = 100;
-        this.context = this.canvas.getContext('2d');
+        // this.canvas = document.createElement('canvas');
+        // this.canvas.width = 100;
+        // this.canvas.height = 100;
+        // this.context = this.canvas.getContext('2d');
+
+        this.canvas = canvas;
+        this.context = ctx;
+        this.canvasOffset = canvasOffset;
 
         this.skeletonRenderer = new spine.canvas.SkeletonRenderer(this.context);
     
@@ -31,6 +41,7 @@ class SpineCharacter {
             this.skeleton = data.skeleton;
             this.state = data.state;
             this.bounds = data.bounds;
+            console.log(this);
             requestAnimationFrame(this.render);
         } else {
             requestAnimationFrame(this.load);
@@ -82,6 +93,7 @@ class SpineCharacter {
         skeleton.setToSetupPose();
         skeleton.updateWorldTransform();
         const offset = new spine.Vector2();
+        console.log
         const size = new spine.Vector2();
         skeleton.getBounds(offset, size, []);
         return { offset: offset, size: size };
@@ -100,7 +112,7 @@ class SpineCharacter {
         this.state.update(delta);
         this.state.apply(this.skeleton);
         this.skeleton.updateWorldTransform();
-        this.skeletonRenderer.draw(this.skeleton);
+        this.skeletonRenderer.draw(this.skeleton, this.canvasOffset);
     
         requestAnimationFrame(this.render);
     }
@@ -118,7 +130,7 @@ class SpineCharacter {
         const centerY = this.bounds.offset.y + this.bounds.size.y / 2;
         const scaleX = this.bounds.size.x / this.canvas.width;
         const scaleY = this.bounds.size.y / this.canvas.height;
-        const scale = Math.max(scaleX, scaleY) * 1.2;
+        let scale = Math.max(scaleX, scaleY) * 1.2;
         if (scale < 1) scale = 1;
         const width = this.canvas.width * scale;
         const height = this.canvas.height * scale;
@@ -181,11 +193,14 @@ function setAnimState(name, track){
 }
 
 function init() {
-    const characterContainer = document.querySelector('.madlads');
+    canvas = document.getElementById('madlad-canvas');
+    ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
     let character = null;
     for (let i = 0; i < numChars; i++) {
-        character = new SpineCharacter();
-        characterContainer.append(character.canvas);
+        character = new SpineCharacter(canvas, ctx, i);
+        // characterContainer.append(character.canvas);
         madLads.push(character);
     }
     buildMenu();
