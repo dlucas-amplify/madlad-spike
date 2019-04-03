@@ -1,7 +1,7 @@
 const skeletonName = 'madlad';
 const animName = 'idle';
 const madLads = [];
-const numChars = 1;
+const numChars = 36;
 
 class SpineCharacter {
     constructor() {

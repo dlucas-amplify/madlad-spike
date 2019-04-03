@@ -1,25 +1,18 @@
 // create a single canvas, and draw madlads to it
-
-// Attempted to just pass the same canvas to all instances of the spine character but that did not work
-// I assume is that each time `skeletonRenderer.draw` is called, the canvas is just completely redrawn, so we're only 
-// seeing the last one.
-let canvas, context;
+const canvas = document.getElementById('madlad-canvas');
+const context = canvas.getContext('2d');
 const skeletonName = 'madlad';
 const animName = 'idle';
 const madLads = [];
-const numChars = 2;
+const numChars = 36;
 
 class SpineCharacter {
-    constructor(canvas, ctx, canvasOffset) {
+    constructor() {
 
-        // this.canvas = document.createElement('canvas');
-        // this.canvas.width = 100;
-        // this.canvas.height = 100;
-        // this.context = this.canvas.getContext('2d');
-
-        this.canvas = canvas;
-        this.context = ctx;
-        this.canvasOffset = canvasOffset;
+        this.canvas = document.createElement('canvas');
+        this.canvas.width = 100;
+        this.canvas.height = 100;
+        this.context = this.canvas.getContext('2d');
 
         this.skeletonRenderer = new spine.canvas.SkeletonRenderer(this.context);
     
@@ -41,15 +34,6 @@ class SpineCharacter {
             this.skeleton = data.skeleton;
             this.state = data.state;
             this.bounds = data.bounds;
-            if (this.canvasOffset === 1) {
-                setTimeout(() => {
-                    // a small delay to show that the whole canvas is redrawn
-                    this.bounds.size.x = 0;
-                    requestAnimationFrame(this.render)
-                }, 5000);
-            } else {
-                requestAnimationFrame(this.render);
-            }
         } else {
             requestAnimationFrame(this.load);
         }
@@ -120,13 +104,12 @@ class SpineCharacter {
         this.state.apply(this.skeleton);
         this.skeleton.updateWorldTransform();
         this.skeletonRenderer.draw(this.skeleton, this.canvasOffset);
-    
-        requestAnimationFrame(this.render);
     }
     
     resize () {
-        const w = this.canvas.clientWidth;
-        const h = this.canvas.clientHeight;
+        const w = 100
+        // console.log(w);
+        const h = 100;
         if (this.canvas.width != w || this.canvas.height != h) {
             this.canvas.width = w;
             this.canvas.height = h;
@@ -185,7 +168,7 @@ function buildMenu(){
     }
 }
 
-function setAnimState(name, track){
+function setAnimState(name, track) {
     
     for (let i=0; i < madLads.length; i++) {
         const madlad = madLads[i];
@@ -199,18 +182,40 @@ function setAnimState(name, track){
     }
 }
 
+// loop through every madlad and place it's canvas on the the main canvas
+function renderCanvas() {
+    const madLadsNotLoaded = madLads.filter((madlad) => {
+        return !madlad.assetManager.isLoadingComplete() ;
+    });
+    context.fillStyle = "#cccccc";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    if (madLadsNotLoaded.length > 0) {
+    } else {
+        let madY = 0;
+        let madX = 0;
+        madLads.forEach((madlad, mIndex) => {
+            if ((mIndex + 1) % 12 === 0) {
+                madY += 100;
+            }
+            madX = mIndex % 12;
+            madlad.render();
+            context.drawImage(madlad.context.canvas, madX * 100, madY);
+        });
+    }
+    requestAnimationFrame(renderCanvas);
+}
+
 function init() {
-    canvas = document.getElementById('madlad-canvas');
-    ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     let character = null;
     for (let i = 0; i < numChars; i++) {
-        character = new SpineCharacter(canvas, ctx, i);
+        character = new SpineCharacter(canvas);
         // characterContainer.append(character.canvas);
         madLads.push(character);
     }
     buildMenu();
+    requestAnimationFrame(renderCanvas);
 }
 
 (function() {
