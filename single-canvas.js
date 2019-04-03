@@ -7,7 +7,7 @@ let canvas, context;
 const skeletonName = 'madlad';
 const animName = 'idle';
 const madLads = [];
-const numChars = 36;
+const numChars = 2;
 
 class SpineCharacter {
     constructor(canvas, ctx, canvasOffset) {
@@ -41,8 +41,15 @@ class SpineCharacter {
             this.skeleton = data.skeleton;
             this.state = data.state;
             this.bounds = data.bounds;
-            console.log(this);
-            requestAnimationFrame(this.render);
+            if (this.canvasOffset === 1) {
+                setTimeout(() => {
+                    // a small delay to show that the whole canvas is redrawn
+                    this.bounds.size.x = 0;
+                    requestAnimationFrame(this.render)
+                }, 5000);
+            } else {
+                requestAnimationFrame(this.render);
+            }
         } else {
             requestAnimationFrame(this.load);
         }
