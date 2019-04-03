@@ -108,7 +108,6 @@ class SpineCharacter {
     
     resize () {
         const w = 100
-        // console.log(w);
         const h = 100;
         if (this.canvas.width != w || this.canvas.height != h) {
             this.canvas.width = w;
@@ -194,7 +193,7 @@ function renderCanvas() {
         let madY = 0;
         let madX = 0;
         madLads.forEach((madlad, mIndex) => {
-            if ((mIndex + 1) % 12 === 0) {
+            if (mIndex % 12 === 0 && mIndex > 0) {
                 madY += 100;
             }
             madX = mIndex % 12;
