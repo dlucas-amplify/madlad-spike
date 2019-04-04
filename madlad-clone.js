@@ -4,7 +4,8 @@ const context = canvas.getContext('2d');
 const skeletonName = 'madlad';
 const animName = 'idle';
 const madLads = [];
-const numChars = 36;
+const numChars = 1;
+const numClones = 36;
 
 class SpineCharacter {
     constructor() {
@@ -186,20 +187,27 @@ function renderCanvas() {
     const madLadsNotLoaded = madLads.filter((madlad) => {
         return !madlad.assetManager.isLoadingComplete() ;
     });
-    context.fillStyle = "#cccccc";
+    // context.fillStyle = "#cccccc";
     // context.fillRect(0, 0, canvas.width, canvas.height);
-    if (madLadsNotLoaded.length > 0) {
-    } else {
+    if (madLadsNotLoaded.length === 0) {
         let madY = 0;
         let madX = 0;
-        madLads.forEach((madlad, mIndex) => {
-            if (mIndex % 12 === 0 && mIndex > 0) {
+        // madLads.forEach((madlad, mIndex) => {
+        //     if (mIndex % 12 === 0 && mIndex > 0) {
+        //         madY += 100;
+        //     }
+        //     madX = mIndex % 12;
+        //     madlad.render();
+        //     context.drawImage(madlad.context.canvas, madX * 100, madY);
+        // });
+        madLads[0].render();
+        for (let i = 0; i < numClones; i++) {
+            if (i % 12 === 0 && i > 0) {
                 madY += 100;
             }
-            madX = mIndex % 12;
-            madlad.render();
-            context.drawImage(madlad.context.canvas, madX * 100, madY);
-        });
+            madX = i % 12;
+            context.drawImage(madLads[0].context.canvas, madX * 100, madY)
+        }
     }
     requestAnimationFrame(renderCanvas);
 }
